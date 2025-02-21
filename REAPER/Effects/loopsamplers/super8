@@ -52,6 +52,7 @@ desc:Super8 MIDI-controlled synchronized looper (Cockos)
 // - latch: wait to run commands until next loop iteration
 
 <? nch < 1 ? nch = 8 ?>
+<? maxmem < 8 ? maxmem = 256 ?>
 <?
   loop(x=0;nch,printf("in_pin:input %d\n",x+=1));
   loop(x=0;nch,printf("out_pin:output %d\n",x+=1));
@@ -59,9 +60,10 @@ desc:Super8 MIDI-controlled synchronized looper (Cockos)
 out_pin:monitor output
 out_pin:click output
 
-options: maxmem=33000000 no_meter gfx_idle prealloc=* 
-
 config: nch "Channels" 8 1 2 4 8="8 (namesake)" 12 16 24 32 48
+config: maxmem "Memory Size -preserve-config" 256 64="64MB - max length 0:23 for 8 channels @ 44.1kHz" 128="128MB - max length 0:47 for 8 channels @ 44.1kHz" 256="256MB (default) - max length 1:35 for 8 channels @ 44.1kHz" 512="512MB - max length 3:10 for 8 channels @ 44.1kHz" 1024="1GB - max length 6:20 for 8 channels @ 44.1kHz"
+
+options: maxmem=<? printf("%d",maxmem*1024*128); ?> no_meter gfx_idle prealloc=* 
 
 slider1:g_slider_sync=0<0,2,1{off,project,playback}>-Sync
 slider4:g_slider_click_cnt=0<0,64,1>-Click count/length
